@@ -1,0 +1,22 @@
+# npm trusted publishing — publish = push a version tag, no tokens anywhere.
+# Requires the Trusted Publisher link on npmjs.com (package Settings) pointing
+# at this repo + this workflow filename.
+name: Publish to npm
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  id-token: write # OIDC — npm mints the credential per run
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest # trusted publishing needs npm >= 11.5.1
+      - run: npm ci
+      - run: npm publish # prepublishOnly runs tsc; OIDC auth, provenance automatic
