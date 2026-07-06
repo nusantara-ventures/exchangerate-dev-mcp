@@ -54,7 +54,7 @@ An API key is required. Get one at https://exchangerate.dev/pricing — the Free
 | `search_docs` | lets the agent look up API behavior itself |
 
 Every response is freshness-labeled: a `source` field says whether the number came from the live intraday
-stream (16 currencies, ~60s updates on trading days) or the ECB daily reference, and `market_session` says
+stream (~60s updates on trading days for actively-traded currencies) or the ECB daily reference, and `market_session` says
 whether the FX market is currently open.
 
 ## Env
