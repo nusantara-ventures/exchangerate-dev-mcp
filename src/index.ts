@@ -35,7 +35,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 const PKG_NAME = "exchangerate-dev-mcp";
-const PKG_VERSION = "0.1.3";
+const PKG_VERSION = "0.1.4";
 const DEFAULT_BASE_URL = "https://api.exchangerate.dev";
 
 type Stderr = (message: string) => void;
@@ -141,7 +141,9 @@ async function main(): Promise<void> {
   });
 
   try {
-    await upstream.connect(upstreamTransport);
+    // timeoutMs bounds the initialize handshake and, below, every forwarded
+    // request — without the option the SDK default (60s) silently applies.
+    await upstream.connect(upstreamTransport, { timeout: timeoutMs });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     log(`Failed to connect to ${endpoint.href}: ${message}`);
@@ -177,43 +179,47 @@ async function main(): Promise<void> {
   //    honest.
   if (serverCapabilities.tools) {
     bridge.setRequestHandler(ListToolsRequestSchema, async () =>
-      forward("tools/list", () => upstream.listTools()),
+      forward("tools/list", () => upstream.listTools(undefined, { timeout: timeoutMs })),
     );
     bridge.setRequestHandler(CallToolRequestSchema, async (request) =>
       forward(`tools/call(${request.params.name})`, () =>
-        upstream.callTool(request.params),
+        upstream.callTool(request.params, undefined, { timeout: timeoutMs }),
       ),
     );
   }
 
   if (serverCapabilities.resources) {
     bridge.setRequestHandler(ListResourcesRequestSchema, async () =>
-      forward("resources/list", () => upstream.listResources()),
+      forward("resources/list", () => upstream.listResources(undefined, { timeout: timeoutMs })),
     );
     bridge.setRequestHandler(ListResourceTemplatesRequestSchema, async () =>
-      forward("resources/templates/list", () => upstream.listResourceTemplates()),
+      forward("resources/templates/list", () =>
+        upstream.listResourceTemplates(undefined, { timeout: timeoutMs }),
+      ),
     );
     bridge.setRequestHandler(ReadResourceRequestSchema, async (request) =>
       forward(`resources/read(${request.params.uri})`, () =>
-        upstream.readResource(request.params),
+        upstream.readResource(request.params, { timeout: timeoutMs }),
       ),
     );
   }
 
   if (serverCapabilities.prompts) {
     bridge.setRequestHandler(ListPromptsRequestSchema, async () =>
-      forward("prompts/list", () => upstream.listPrompts()),
+      forward("prompts/list", () => upstream.listPrompts(undefined, { timeout: timeoutMs })),
     );
     bridge.setRequestHandler(GetPromptRequestSchema, async (request) =>
       forward(`prompts/get(${request.params.name})`, () =>
-        upstream.getPrompt(request.params),
+        upstream.getPrompt(request.params, { timeout: timeoutMs }),
       ),
     );
   }
 
   if (serverCapabilities.completions) {
     bridge.setRequestHandler(CompleteRequestSchema, async (request) =>
-      forward("completion/complete", () => upstream.complete(request.params)),
+      forward("completion/complete", () =>
+        upstream.complete(request.params, { timeout: timeoutMs }),
+      ),
     );
   }
 
