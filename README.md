@@ -1,4 +1,6 @@
-# exchangerate-dev-mcp
+# @nusantara-ventures/exchangerate-mcp
+
+> **Renamed.** This package was previously published as `exchangerate-dev-mcp`. That name is deprecated and will not receive updates — install `@nusantara-ventures/exchangerate-mcp` instead. No API changes came with the move.
 
 Stdio bridge for [exchangerate.dev](https://exchangerate.dev) — indicative, session-aware **developer-grade FX
 reference rates** for AI agents. Live exchange rates, currency conversion, and historical FX data for Claude,
@@ -23,7 +25,7 @@ claude mcp add --transport http exchangerate-dev https://api.exchangerate.dev/v1
   "mcpServers": {
     "exchangerate-dev": {
       "command": "npx",
-      "args": ["-y", "exchangerate-dev-mcp"]
+      "args": ["-y", "@nusantara-ventures/exchangerate-mcp"]
     }
   }
 }
@@ -36,7 +38,7 @@ An API key is required. Get one at https://exchangerate.dev/pricing — the Free
   "mcpServers": {
     "exchangerate-dev": {
       "command": "npx",
-      "args": ["-y", "exchangerate-dev-mcp"],
+      "args": ["-y", "@nusantara-ventures/exchangerate-mcp"],
       "env": { "EXCHANGERATE_API_KEY": "your-key-here" }
     }
   }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// exchangerate-dev-mcp — stdio ↔ HTTP Streamable bridge for the exchangerate.dev
+// @nusantara-ventures/exchangerate-mcp — stdio ↔ HTTP Streamable bridge for the exchangerate.dev
 // Model Context Protocol server. Thin proxy: the bridge holds no tool
 // definitions, no schemas, no business logic. It opens a stdio MCP server
 // for the local client (Claude Desktop / Cursor / etc.) and forwards every
@@ -34,8 +34,13 @@ import {
   ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
+// Wire identity for the User-Agent and stderr prefix — deliberately a
+// literal, decoupled from the distribution name. The package was renamed to
+// @nusantara-ventures/exchangerate-mcp in 0.2.0; tying this to it would have
+// silently rewritten every User-Agent the backend sees, making one client
+// read as an install disappearing and a new one appearing in API analytics.
 const PKG_NAME = "exchangerate-dev-mcp";
-const PKG_VERSION = "0.1.4";
+const PKG_VERSION = "0.2.0";
 const DEFAULT_BASE_URL = "https://api.exchangerate.dev";
 
 type Stderr = (message: string) => void;
