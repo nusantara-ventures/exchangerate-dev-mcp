@@ -1,6 +1,6 @@
 {
   "name": "@nusantara-ventures/exchangerate-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nusantara-ventures/exchangerate-dev-mcp.git"
@@ -21,13 +21,14 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "prepublishOnly": "npm test"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0"
+    "@modelcontextprotocol/sdk": "^1.32.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -50,5 +51,5 @@
   ],
   "homepage": "https://exchangerate.dev/docs",
   "license": "MIT",
-  "author": "Nusantara Ventures LLC <hello@exchangerate.dev>"
+  "author": "Nusantara Ventures, LLC <hello@exchangerate.dev>"
 }

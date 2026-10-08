@@ -33,14 +33,8 @@ import {
   McpError,
   ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import { CLIENT_ID, PACKAGE_NAME, PACKAGE_VERSION } from "./package-info.js";
 
-// Wire identity for the User-Agent and stderr prefix — deliberately a
-// literal, decoupled from the distribution name. The package was renamed to
-// @nusantara-ventures/exchangerate-mcp in 0.2.0; tying this to it would have
-// silently rewritten every User-Agent the backend sees, making one client
-// read as an install disappearing and a new one appearing in API analytics.
-const PKG_NAME = "exchangerate-dev-mcp";
-const PKG_VERSION = "0.2.0";
 const DEFAULT_BASE_URL = "https://api.exchangerate.dev";
 
 type Stderr = (message: string) => void;
@@ -48,7 +42,7 @@ type Stderr = (message: string) => void;
 const log: Stderr = (message) => {
   // Trailing newline for line-buffered stderr consumers (Claude Desktop
   // surfaces MCP server stderr in its logs).
-  process.stderr.write(`[${PKG_NAME}] ${message}\n`);
+  process.stderr.write(`[${PACKAGE_NAME}] ${message}\n`);
 };
 
 function resolveEndpoint(base: string): URL {
@@ -127,7 +121,7 @@ async function main(): Promise<void> {
 
   // Build request headers — auth is optional only when ALLOW_ANONYMOUS=true.
   const headers: Record<string, string> = {
-    "User-Agent": `${PKG_NAME}/${PKG_VERSION} (stdio-bridge)`,
+    "User-Agent": `${CLIENT_ID}/${PACKAGE_VERSION} (stdio-bridge)`,
   };
   if (apiKey) {
     headers.Authorization = `Bearer ${apiKey}`;
@@ -137,7 +131,7 @@ async function main(): Promise<void> {
 
   // 1. Connect to upstream HTTP MCP.
   const upstream = new Client(
-    { name: `${PKG_NAME}-bridge`, version: PKG_VERSION },
+    { name: `${CLIENT_ID}-bridge`, version: PACKAGE_VERSION },
     { capabilities: {} },
   );
 
@@ -174,7 +168,7 @@ async function main(): Promise<void> {
   if (serverCapabilities.completions) bridgeCapabilities.completions = {};
 
   const bridge = new Server(
-    { name: "exchangerate", version: PKG_VERSION },
+    { name: "exchangerate", version: PACKAGE_VERSION },
     { capabilities: bridgeCapabilities },
   );
 

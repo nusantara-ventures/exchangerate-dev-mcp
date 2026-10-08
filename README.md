@@ -1,7 +1,5 @@
 # @nusantara-ventures/exchangerate-mcp
 
-> **Renamed.** This package was previously published as `exchangerate-dev-mcp`. That name is deprecated and will not receive updates — install `@nusantara-ventures/exchangerate-mcp` instead. No API changes came with the move.
-
 Stdio bridge for [exchangerate.dev](https://exchangerate.dev) — indicative, session-aware **developer-grade FX
 reference rates** for AI agents. Live exchange rates, currency conversion, and historical FX data for Claude,
 Cursor, and any MCP (Model Context Protocol) client. Indicative rates (aggregated market data + public reference
@@ -19,6 +17,8 @@ claude mcp add --transport http exchangerate-dev https://api.exchangerate.dev/v1
 ```
 
 ## Quick start
+
+Requires Node.js 20 or newer.
 
 ```json
 {
@@ -82,4 +82,4 @@ npm run build   # tsc -> dist/
 Full API reference and pricing: [exchangerate.dev/docs](https://exchangerate.dev/docs) — the REST API is
 Frankfurter-compatible (`base` + `symbols` params) if you'd rather skip MCP and `curl` it.
 
-MIT © Nusantara Ventures LLC
+MIT © Nusantara Ventures, LLC
